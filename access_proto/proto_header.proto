@@ -1,0 +1,25 @@
+package warmyou;
+
+/* 将消息的类型和命令ID都以protobuf的枚举的形式定义的好处是：
+   可以通过protobuf的接口，以可读性极高的方式在LOG中输出消息的类型和ID
+   这将给调试和排除带来极大的便利。
+*/
+enum E_Category {
+}
+
+enum E_Command {
+}
+
+message Header {
+    required E_Category Category = 1; // 消息类型
+    required E_Command CommandID = 2; // 命令ID
+    required uint32 TransID      = 3; // 发起方用于标识异步请求，接收方必须原样返回给发起方
+    required int16  ErrCode      = 4; // 错误码, 约定 0 表示成功；其他值均表示失败
+    optional uint64 HintKey      = 5; // 根据这个标识提示消息将分发到哪里
+}
+
+message Package {
+    required Header header = 1;
+    optional string body   = 2; // 消息体，根据头里的消息类型和ID来确定怎样解析
+                                // 允许不存在body的情况
+}

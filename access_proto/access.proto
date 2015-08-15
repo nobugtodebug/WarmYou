@@ -1,0 +1,65 @@
+package warmyou.access;
+
+import "proto_header.proto"
+
+enum AccountSource {
+    Own    = 0;
+    AliPay = 1;
+    QQ     = 2;
+    WeiXin = 3;
+    WeiBo  = 4;
+}
+
+enum AccoutnType {
+    Older = 0; // 老人帐号
+    Giver = 1; // 子女帐号
+}
+
+// 对应的响应消息：LoginResponse
+message Register {
+    required string userName      = 1;
+    required string password      = 2;
+    required AccoutnType accType  = 3;
+    required sex                  = 5;
+    required birthday             = 6;
+    optional string country       = 7;
+    optional string province      = 8;
+    optional string city          = 9;
+    optional string address       = 10;
+}
+
+message CreateFamily {
+}
+
+message CreateOldAccount {
+}
+
+//----------------------------------------------------------------------------
+
+// 对应的响应消息：LoginResponse
+message Login {
+    optional string userName      = 1;
+    optional string password      = 2;
+    required AccountSource acctSrc = 3;
+    optional string location       = 4; // 位置信息
+}
+
+message LoginResponse {
+    required string token   = 1; // 令牌串
+    required uint64 expired = 2; // 过期时间, unix timestamp
+    required uint64 userid  = 3;
+}
+
+message FamilyInfo {
+    required string userName      = 1;
+    required uint64 userid  = 3;
+    optional string location       = 4; // 位置信息
+    required int    status = 5;
+}
+
+message GetFamilyInfo {
+}
+
+message TheFamily {
+    repeated FamilyInfo myFamilys = 1;
+}
